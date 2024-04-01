@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Table</title>
+    <style>
+        /* Style the table container */
+.user-table-container {
+  margin: 0 auto; /* Center the table horizontally */
+  width: 80%; /* Set a maximum width */
+}
+
+/* Style the table itself */
+table {
+  border-collapse: collapse; /* Remove default table borders */
+  width: 100%; /* Stretch table to full width */
+}
+
+/* Style table headers */
+th {
+  background-color: #f1f1f1; /* Light gray background */
+  padding: 10px; /* Add padding for spacing */
+  text-align: left; /* Left-align header text */
+  border: 1px solid #ddd; /* Add a thin border */
+}
+
+/* Style table data cells */
+td {
+  padding: 10px; /* Add padding for spacing */
+  border: 1px solid #ddd; /* Add a thin border */
+}
+
+/* Alternate row color for better readability (zebra striping) */
+tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+    </style>
+  </head>
+  <body>
+    <h1>User Table</h1>
+    <table id="userTable">
+      </table>
+      <script>
+        function displayUsers() {
+          // Get the user data from local storage
+          const userDataString = localStorage.getItem("userData");
+  
+          // Check if data exists
+          if (!userDataString) {
+            console.warn("No user data found in local storage.");
+            return;
+          }
+  
+          // Parse the JSON string into an array of objects
+          const userData = JSON.parse(userDataString);
+  
+          // Create table header row dynamically
+          const table = document.getElementById("userTable");
+          const tableHeaderRow = document.createElement("tr");
+  
+          // Add header for serial number
+          const serialNumberHeader = document.createElement("th");
+          serialNumberHeader.textContent = "Serial No.";
+          tableHeaderRow.appendChild(serialNumberHeader);
+  
+          // Add headers for each user property
+          for (const key in userData[0]) {
+            const tableHeaderCell = document.createElement("th");
+            tableHeaderCell.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+            tableHeaderRow.appendChild(tableHeaderCell);
+          }
+  
+          table.appendChild(tableHeaderRow);
+  
+          // Add table rows for each user object
+          userData.forEach((user, index) => {
+            const tableRow = document.createElement("tr");
+  
+            // Add serial number cell
+            const serialNumberCell = document.createElement("td");
+            serialNumberCell.textContent = index + 1; // Start serial number from 1
+            tableRow.appendChild(serialNumberCell);
+  
+            // Add table cells for each user property
+            for (const key in user) {
+              const tableCell = document.createElement("td");
+              tableCell.textContent = user[key];
+              tableRow.appendChild(tableCell);
+            }
+  
+            table.appendChild(tableRow);
+          });
+        }
+  
+        displayUsers();
+      </script>
+  </body>
+</html>
